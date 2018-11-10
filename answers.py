@@ -21,10 +21,12 @@ def lml(alpha, beta, Phi, Y):
     :return: the log marginal likelihood, a scalar
     """
     D = Y.shape[0]
-    constant = -0.5 * D * np.log(2*np.pi)
+    constant = -0.5 * D * np.log(2.0*np.pi)
     term = (alpha * np.dot(Phi, Phi.T)) + (beta * np.identity(D))
 
-    return constant - (0.5 * np.log(np.linalg.det(term))) - (0.5 * np.dot(np.dot(Y.T,np.linalg.inv(term)), Y))
+    result = constant - (0.5 * np.log(np.linalg.det(term))) - (0.5 * np.dot(np.dot(Y.T,np.linalg.inv(term)), Y))
+
+    return result[0][0] 
 
 def grad_lml(alpha, beta, Phi, Y):
     """
