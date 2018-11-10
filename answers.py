@@ -39,7 +39,7 @@ def grad_lml(alpha, beta, Phi, Y):
     :return: array of shape (2,). The components of this array are the gradients
     (d_lml_d_alpha, d_lml_d_beta), the gradients of lml with respect to alpha and beta respectively.
     """
-    grad = np.zeros((2,1))
+    grad = np.zeros((2,))
 
     D = Y.shape[0]
     term = (alpha * np.dot(Phi, Phi.T)) + (beta * np.identity(D))
@@ -48,9 +48,9 @@ def grad_lml(alpha, beta, Phi, Y):
 
     term2 = np.dot(inv_term, np.dot(Phi_Phi_T, inv_term))
 
-    grad[0,0] = -0.5 * np.matrix.trace(np.dot(inv_term, Phi_Phi_T)) + 0.5 * np.dot(Y.T, np.dot(term2, Y))
+    grad[0] = -0.5 * np.matrix.trace(np.dot(inv_term, Phi_Phi_T)) + 0.5 * np.dot(Y.T, np.dot(term2, Y))
 
     inv_inv = np.dot(inv_term, inv_term)
-    grad[1,0] = -0.5 * np.matrix.trace(inv_term) + 0.5 * np.dot(Y.T, np.dot(inv_inv, Y))
+    grad[1] = -0.5 * np.matrix.trace(inv_term) + 0.5 * np.dot(Y.T, np.dot(inv_inv, Y))
 
     return grad
