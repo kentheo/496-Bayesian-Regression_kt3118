@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-Use this file for your answers. 
+Use this file for your answers.
 
-This file should been in the root of the repository 
-(do not move it or change the file name) 
+This file should been in the root of the repository
+(do not move it or change the file name)
 
 """
 
@@ -20,7 +20,11 @@ def lml(alpha, beta, Phi, Y):
     :param Y: array of shape (N, 1)
     :return: the log marginal likelihood, a scalar
     """
-    pass
+    D = Y.shape[0]
+    constant = -D/2 * np.log(2*np.pi)
+    term = alpha * np.dot(Phi, Phi.T) + beta * np.identity(N)
+
+    return constant - (0.5 * np.log(np.linalg.det(term))) - (0.5 * np.dot(np.dot(Y.T,np.linalg.inv(term)), Y))
 
 def grad_lml(alpha, beta, Phi, Y):
     """
@@ -34,4 +38,3 @@ def grad_lml(alpha, beta, Phi, Y):
     (d_lml_d_alpha, d_lml_d_beta), the gradients of lml with respect to alpha and beta respectively.
     """
     pass
-
