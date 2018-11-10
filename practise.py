@@ -10,7 +10,9 @@ def bayesian_regression(K, X_train, Y_train, alpha, beta):
     phi_train = polynomial_design_matrix(K, X_train)
     lml1 = lml(alpha, beta, phi_train, Y_train)
 
-    return lml1
+    grad = grad_lml(alpha, beta, phi_train, Y_train)
+
+    return grad
 
 print(bayesian_regression(3, X_train, Y_train, 2.0, 4.0))
 
