@@ -24,7 +24,7 @@ def lml(alpha, beta, Phi, Y):
     constant = -D/2 * np.log(2*np.pi)
     term = alpha * np.dot(Phi, Phi.T) + beta * np.identity(D)
 
-    return constant - (0.5 * np.log(np.linalg.det(term))) - (0.5 * np.dot(np.dot(Y.T,np.linalg.inv(term)), Y))
+    return (constant - (0.5 * np.log(np.linalg.det(term))) - (0.5 * np.dot(np.dot(Y.T,np.linalg.inv(term)), Y)))[0]
 
 def grad_lml(alpha, beta, Phi, Y):
     """
