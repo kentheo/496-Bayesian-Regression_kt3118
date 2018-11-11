@@ -1,6 +1,14 @@
 import numpy as np
 from answers import *
-from polynomial import *
+import matplotlib.pyplot as plt
+
+def polynomial_design_matrix(K, x):
+    phi = np.zeros((len(x), K+1))
+    for j in range(K+1):
+        for i in range(len(x)):
+            phi[i][j] = x[i]**j
+    # print("phi shape = {0}".format(phi.shape))
+    return phi
 
 
 def gradient_descent(step_size, Phi, Y_values, tolerance):
