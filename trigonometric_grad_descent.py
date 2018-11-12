@@ -11,13 +11,13 @@ def trigonometric_design_matrix(K, x):
         for j in range(1, K+1):
             phi[i][(2*j)-1] = np.sin(2*np.pi*j*x[i])
             phi[i][2*j] = np.cos(2*np.pi*j*x[i])
-    
+
     return phi
 
 def gradient_descent(step_size, Phi, Y_values):
     start_value = [0.1, 0.15]
     x_i = start_value
-    max_iterations = 300
+    max_iterations = 500
     iteration = 0
 
     prev_step_size1 = 1
@@ -32,7 +32,7 @@ def gradient_descent(step_size, Phi, Y_values):
 
         steps = np.concatenate((steps, np.array([x_i])), axis=0)
         iteration += 1
-        
+
     return [steps, iteration, start_value]
 
 def plot_contour_with_grad_descent(K, step_size):
@@ -65,7 +65,7 @@ def plot_contour_with_grad_descent(K, step_size):
     # print(iteration)
     print(steps[0])
     print("alpha = {0}, beta = {1}".format(steps[len(steps)-1, 0], steps[len(steps)-1, 1]))
-    
+
     # Contour Plot of F2
     fig = plt.figure(figsize=(10,10))
     ax = fig.add_subplot(1, 1, 1)
@@ -83,7 +83,7 @@ def plot_contour_with_grad_descent(K, step_size):
     maxes = "alpha = " + str(max_alpha) + ", beta = " + str(max_beta)
 
     result_to_write = [x_i, maxes]
-    textfilename = '/home/kendeas93/Desktop/496-bayesian-regression_kt3118/trig_lml' + str(K) + '.txt'
+    textfilename = '/homes/kt3118/Desktop/496-bayesian-regression_kt3118/trig_lml' + str(K) + '.txt'
     with open(textfilename, 'w+') as f:
         for i in range(len(result_to_write)):
             f.write("%s\n" % str(result_to_write[i]))
@@ -96,7 +96,7 @@ def plot_contour_with_grad_descent(K, step_size):
 
 # K, step size
 def main():
-    plot_contour_with_grad_descent(11, 0.0001)
+    plot_contour_with_grad_descent(6, 0.0001)
     pass
 # K_list = []
 # sigma_list = []

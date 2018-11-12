@@ -8,7 +8,7 @@ def readFile():
 	read_lines = []
 	# textfilename = '/home/kendeas93/Desktop/496-bayesian-regression_kt3118/trig_lml' + str(K) + '.txt'
 	for j in range(11):
-		textfilename = '/home/kendeas93/Desktop/496-bayesian-regression_kt3118/trig_lml' + str(j) + '.txt'
+		textfilename = '/homes/kt3118/Desktop/496-bayesian-regression_kt3118/trig_lml' + str(j) + '.txt'
 		with open(textfilename, 'r') as f:
 		    f1 = f.readlines()
 		    for i in range(len(f1)):
@@ -39,23 +39,31 @@ def getMaxLML(max_params):
 
 	return maxLML_list
 
+def getMaxParams(max_params):
+	alphas, betas, order_of_basis = [], [], []
+	for i in range(11):
+		alpha = max_params[i][0]
+		beta = max_params[i][1]
+		alphas.append(alpha)
+		betas.append(beta)
+		order_of_basis.append(i)
+
+	return alphas, betas, order_of_basis
+
 def main():
 	max_params = readFile()
-	lml_max_values = getMaxLML(max_params)
+	alphas, betas, order_of_basis = getMaxParams(max_params)
 
 	# PLOTS
 	fig = plt.figure(figsize=(11,9))
 
-	order_of_basis = []
-	for i in range(11):
-	    order_of_basis.append(i)
-
-	plt.plot(order_of_basis, lml_max_values, 'r-')
+	plt.plot(order_of_basis, alphas, 'g-', order_of_basis, betas, 'b-')
+	plt.legend(["ML alpha", "ML beta"], loc='upper right')
 	plt.xlabel("Order of basis")
-	plt.ylabel("LML")
-	plt.title("Max LML against Order of Basis Functions")
+	plt.ylabel("Y")
+	plt.title("Parameters alpha, beta against Order of Basis Functions")
 
-	fig.savefig('lml_against_orders.png')
+	fig.savefig('params_against_orders.png')
 
 	plt.show()
 	pass
