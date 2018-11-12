@@ -45,8 +45,8 @@ def plot_contour_with_grad_descent(K, step_size):
 
     # X = alpha range
     # Y = beta range
-    X = np.arange(0.001, 0.5, 0.05)
-    Y = np.arange(0.001, 0.5, 0.05)
+    X = np.arange(0.001, 1.5, 0.05)
+    Y = np.arange(0.001, 1.5, 0.05)
 
     X, Y = np.meshgrid(X, Y)
 
@@ -96,7 +96,7 @@ def plot_contour_with_grad_descent(K, step_size):
 
 # K, step size
 def main():
-    plot_contour_with_grad_descent(6, 0.0001)
+    plot_contour_with_grad_descent(0, 0.0001)
     pass
 # K_list = []
 # sigma_list = []
