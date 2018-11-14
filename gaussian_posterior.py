@@ -28,7 +28,7 @@ phi_train = gaussian_design_matrix(K, X_train, l)
 
 aI = alpha*np.identity(K+1)
 
-sigma_temp = (beta**-1) * np.dot(phi_train.T, phi_train) + np.linalg.inv(aI)
+sigma_temp = ((beta**-1) * np.dot(phi_train.T, phi_train)) + np.linalg.inv(aI)
 sigma = np.linalg.inv(sigma_temp)
 
 mu_temp = (beta**-1) * np.dot(phi_train.T, Y_train)
@@ -38,7 +38,7 @@ mu = np.dot(sigma, mu_temp)
 
 # Test data
 N_test = 200
-X_test = np.reshape(np.linspace(-0.3, 1.3, N_test), (N_test, 1))
+X_test = np.reshape(np.linspace(-1., 1.5, N_test), (N_test, 1))
 phi_test = gaussian_design_matrix(K, X_test, l)
 
 random_w_list, Y_test_list = [], []
@@ -48,13 +48,24 @@ for i in range(5):
     Y_test_list.append(np.dot(phi_test, random_w))
 
 # Predictive mean
-mu_predictive = np.dot(mu.T, phi_test.T)
+mu_predictive = np.dot(phi_test, mu)
 sigma_predictive = np.dot(np.dot(phi_test, sigma), phi_test.T)
-predictive_mean = np.random.multivariate_normal(mu_predictive.reshape((N_test,)), sigma_predictive).reshape(N_test, 1)
 
-error = np.random.multivariate_normal(mu_predictive.reshape((N_test,)), sigma_predictive).reshape(N_test, 1)
-print(error.shape)
+variance_no_noise = np.diagonal(sigma_predictive)
+variance_no_noise = np.sqrt(variance_no_noise)
+error = (2*variance_no_noise).reshape(N_test,1)
 
+plus = mu_predictive+error
+minus = mu_predictive-error
+
+# Noisy s.d stuff
+noisy_sigma = sigma_predictive + (beta * np.identity(len(sigma_predictive))) 
+variance_noise = np.diagonal(noisy_sigma)
+variance_noise = np.sqrt(variance_noise)
+noise_error = (2*variance_noise).reshape(N_test,1)
+
+Y_error_plus = mu_predictive + noise_error
+Y_error_minus = mu_predictive - noise_error
 # Plots
 fig = plt.figure(1,figsize=(11,9))
 
@@ -64,9 +75,10 @@ plt.plot(X_test, Y_test_list[1], 'g-')
 plt.plot(X_test, Y_test_list[2], 'r-')
 plt.plot(X_test, Y_test_list[3], 'm-')
 plt.plot(X_test, Y_test_list[4], 'c-')
-plt.plot(X_test, predictive_mean, 'y-')
-plt.fill_between(X_test, predictive_mean-error, predictive_mean+error)
-plt.legend(["Original", "Sample 1", "Sample 2", "Sample 3", "Sample 4", "Sample 5", "Predictive Mean"], loc='lower left')
+plt.plot(X_test, mu_predictive, 'y-')
+plt.fill_between(X_test.reshape(N_test,), plus.reshape(N_test,), minus.reshape(N_test,))
+plt.plot(X_test, Y_error_plus, 'y--', X_test, Y_error_minus, 'y--')
+plt.legend(["Original", "Sample 1", "Sample 2", "Sample 3", "Sample 4", "Sample 5", "Predictive Mean", "Error bars w/ noise"], loc='lower left')
 plt.xlabel("Phi")
 plt.ylabel("Y")
 
