@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 def gaussian_design_matrix(K, x, l):
     phi = np.zeros((len(x), K+1))
     # Get means of m_i
-    means = np.reshape(np.linspace(-0.5, 1.0, K+1), (K+1, 1))
+    means = np.reshape(np.linspace(-0.5, 1.0, K), (K, 1))
+    print(means.shape)
     for i in range(len(x)):
         phi[i][0] = 1.0
         for j in range(1, K+1):
-            term = (x[i] - means[j])**2
+            term = (x[i] - means[j-1])**2
             term /= (2*l)**2
             phi[i][j] = np.exp(-term)
 
@@ -49,6 +50,7 @@ for i in range(5):
 
 # Predictive mean
 mu_predictive = np.dot(phi_test, mu)
+print(mu.shape)
 sigma_predictive = np.dot(np.dot(phi_test, sigma), phi_test.T)
 
 variance_no_noise = np.diagonal(sigma_predictive)
@@ -59,7 +61,7 @@ plus = mu_predictive+error
 minus = mu_predictive-error
 
 # Noisy s.d stuff
-noisy_sigma = sigma_predictive + (beta * np.identity(len(sigma_predictive))) 
+noisy_sigma = sigma_predictive + (beta * np.identity(len(sigma_predictive)))
 variance_noise = np.diagonal(noisy_sigma)
 variance_noise = np.sqrt(variance_noise)
 noise_error = (2*variance_noise).reshape(N_test,1)
